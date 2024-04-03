@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using ImportExportTracker.DB.Entity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// DbContext configuration
+builder.Services.AddDbContext<ImportExportDbContext>(options =>
+options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
 var app = builder.Build();
 

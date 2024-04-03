@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ImportExportTracker.DB\ImportExportTracker.DB.csproj" />
+  </ItemGroup>
+
 </Project>
