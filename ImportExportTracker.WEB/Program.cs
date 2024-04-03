@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ImportExportTracker.DB.Entity;
+using ImportExportTracker.SERVICES.Control.CommodityServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,10 @@ builder.Services.AddControllersWithViews();
 // DbContext configuration
 builder.Services.AddDbContext<ImportExportDbContext>(options =>
 options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+
+
+builder.Services.AddScoped<ICommodityServices, CommodityServices>();
+
 
 var app = builder.Build();
 

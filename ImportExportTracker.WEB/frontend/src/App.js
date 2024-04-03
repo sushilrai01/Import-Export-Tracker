@@ -9,9 +9,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {
   return (
     <>
-      <Navbar title="Import Export Tracker" />
-
       <Router>
+        <Navbar title="Import Export Tracker" />
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/form" element={<Form1 />}></Route>

@@ -14,4 +14,6 @@ public partial class Category
     public DateOnly? CreatedDate { get; set; }
 
     public DateOnly? UpdatedDate { get; set; }
+
+    public virtual ICollection<CommodityImport> CommodityImports { get; set; } = new List<CommodityImport>();
 }
