@@ -5,8 +5,8 @@ function AddItem() {
   const [values, setValues] = useState({
     chapterCode: "",
     hsCode: "",
-    categoryTitle: "",
-    itemName: "",
+    categoryName: "",
+    commodityName: "",
     quantity: 0,
     importAmount: 0,
   });
@@ -17,9 +17,13 @@ function AddItem() {
     };
   };
 
+  const apiUrl = "https://localhost:7135/";
   const addItem = async () => {
     try {
-      const response = await axios.post("api/commodity/addItem", values);
+      const response = await axios.post(
+        apiUrl + "api/commodity/addItem",
+        values
+      );
       console.log("Post created:", response.data);
       // Handle successful POST request here
     } catch (error) {
@@ -37,16 +41,21 @@ function AddItem() {
             value={values.chapterCode}
             onChange={getHandler("chapterCode")}
           />
-          <input value={values.hsCode} onChange={getHandler("chapterCode")} />
 
-          <label>Category Title:</label>
+          <label>HsCode:</label>
+          <input value={values.hsCode} onChange={getHandler("hsCode")} />
+
+          <label>Category Name:</label>
           <input
-            value={values.categoryTitle}
-            onChange={getHandler("categoryTitle")}
+            value={values.categoryName}
+            onChange={getHandler("categoryName")}
           />
 
-          <label>Item Name:</label>
-          <input value={values.itemName} onChange={getHandler("itemName")} />
+          <label>Commodity Name:</label>
+          <input
+            value={values.commodityName}
+            onChange={getHandler("commodityName")}
+          />
 
           <label>Quantity:</label>
           <input value={values.quantity} onChange={getHandler("quantity")} />
