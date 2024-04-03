@@ -17,6 +17,8 @@ public partial class ImportExportDbContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<CommodityImport> CommodityImports { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=ASPIRE-SUSHI\\SQLEXPRESS;Database=Import_Export_DB;user=sa;password=@ssms123;TrustServerCertificate=True");
@@ -31,6 +33,28 @@ public partial class ImportExportDbContext : DbContext
             entity.Property(e => e.ChapterCode)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<CommodityImport>(entity =>
+        {
+            entity.HasKey(e => e.CommodityId);
+
+            entity.ToTable("CommodityImport");
+
+            entity.Property(e => e.ChapterCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.HsCode)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Unit)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.CommodityImports)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_CommodityImport_CommodityImport");
         });
 
         OnModelCreatingPartial(modelBuilder);
