@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using ImportExportTracker.DB.Entity;
 using ImportExportTracker.SERVICES.Control.CommodityServices;
 
+
+var AllowCors = "_allowCors";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,6 +17,16 @@ options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
 builder.Services.AddScoped<ICommodityServices, CommodityServices>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowCors,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
 
 var app = builder.Build();
 
@@ -27,7 +40,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseCors(AllowCors);
 app.UseRouting();
 
 app.UseAuthorization();
