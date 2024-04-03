@@ -1,6 +1,6 @@
 // import { useState } from "react";
 import Home from "./components/Home";
-import Form1 from "./components/Form1";
+import AddItem from "./components/AddItem";
 import Navbar from "./components/Navbar";
 import ItemImport from "./components/ItemImport";
 
@@ -12,8 +12,8 @@ function App() {
       <Router>
         <Navbar title="Import Export Tracker" />
         <Routes>
-          <Route exact path="/" element={<Home />}></Route>
-          <Route exact path="/form" element={<Form1 />}></Route>
+          <Route exact path="/form" element={<Home />}></Route>
+          <Route exact path="/" element={<AddItem />}></Route>
           <Route exact path="/aboutItemImport" element={<ItemImport />}></Route>
         </Routes>
       </Router>
