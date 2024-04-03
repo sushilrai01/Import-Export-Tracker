@@ -2,8 +2,7 @@ import { useState } from "react";
 
 function Form1() {
   const [name, setName] = useState("sushil rai");
-  let [arr, setArray] = useState([1]);
-    const itemNo = 3;
+  const itemNo = 3;
 
   const ul = document.createElement("ul");
   for (let i = 0; i < itemNo; i++) {
@@ -17,17 +16,19 @@ function Form1() {
 
   return (
     <>
-      <div className="form">
-        <div>
-          <label>Enter Your Name:</label>
-          <input
-            type="text"
-            value={name}
-            placeholder="Name"
-            onChange={onNameEnter}
-          ></input>
+      <div className="container">
+        <div className="form">
+          <div>
+            <label>Enter Your Name:</label>
+            <input
+              type="text"
+              value={name}
+              placeholder="Name"
+              onChange={onNameEnter}
+            ></input>
 
-          <div></div>
+            <div></div>
+          </div>
         </div>
       </div>
     </>
