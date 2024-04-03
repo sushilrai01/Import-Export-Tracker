@@ -1,23 +1,23 @@
 // import { useState } from "react";
+import Home from "./components/Home";
 import Form1 from "./components/Form1";
 import Navbar from "./components/Navbar";
+import ItemImport from "./components/ItemImport";
+
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  // const [arr1] = useState([  ]);
-
   return (
     <>
-      <Navbar></Navbar>
-      <div className="text-justify">
-        <p className="col-md-6 ">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-          veritatis illum quae temporibus, asperiores minus, voluptas maiores,
-          earum blanditiis deserunt dignissimos mollitia iusto! Quasi corrupti
-          perferendis, modi voluptas voluptatem dicta?
-        </p>
-      </div>
+      <Navbar title="Import Export Tracker" />
 
-      <Form1></Form1>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />}></Route>
+          <Route exact path="/form" element={<Form1 />}></Route>
+          <Route exact path="/aboutItemImport" element={<ItemImport />}></Route>
+        </Routes>
+      </Router>
     </>
   );
 }

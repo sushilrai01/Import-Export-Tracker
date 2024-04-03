@@ -1,13 +1,16 @@
-import "../css/Navbar.css";
+import React from "react";
+import "./css/Navbar.css";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar(props) {
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
-            Import Export Tracker
-          </a>
+          <Link className="navbar-brand" to="/">
+            {props.title}
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -23,19 +26,19 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/">
+                <Link className="nav-link active" aria-current="page" to="/">
                   Home
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="https://github.com/sushilrai01">
-                  Features
-                </a>
+                <Link className="nav-link" to="/form">
+                  Form Submission
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
-                  Pricing
-                </a>
+                <Link className="nav-link" to="/aboutItemImport">
+                  About Us
+                </Link>
               </li>
             </ul>
 
@@ -46,7 +49,7 @@ function Navbar() {
                 placeholder="Search"
                 aria-label="Search"
               ></input>
-              <button class="btn btn-outline-success" type="submit">
+              <button className="btn btn-outline-success" type="submit">
                 Search
               </button>
             </form>
@@ -57,4 +60,11 @@ function Navbar() {
   );
 }
 
+Navbar.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+
+Navbar.defaultProps = {
+  title: "Hello Old!",
+};
 export default Navbar;
