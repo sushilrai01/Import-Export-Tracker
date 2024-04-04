@@ -7,10 +7,10 @@ function AddItem() {
       id: 1,
       chapterCode: "",
       hsCode: "",
-      categoryName: "",
+      categoryId: "",
       commodityName: "",
       quantity: "",
-      importAmount: "",
+      importValue: "",
     },
   ]);
 
@@ -19,19 +19,19 @@ function AddItem() {
       id: items.length + 1,
       chapterCode: "",
       hsCode: "",
-      categoryName: "",
+      categoryId: "",
       commodityName: "",
       quantity: "",
-      importAmount: "",
+      importValue: "",
     };
     setItems([...items, newItem]);
   };
 
-  const handleInputChange = (id, e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (ids, e) => {
+    const { id, value } = e.target;
     const updatedItems = items.map((item) => {
-      if (item.id === id) {
-        return { ...item, [name]: value };
+      if (item.id === ids) {
+        return { ...item, [id]: value };
       }
       return item;
     });
@@ -61,7 +61,7 @@ function AddItem() {
           <div key={item.id}>
             <input
               placeholder="Chapter Code"
-              name="chapterCode"
+              id="chapterCode"
               value={item.chapterCode}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
@@ -69,7 +69,7 @@ function AddItem() {
 
             <input
               placeholder="HsCode"
-              name="hsCode"
+              id="hsCode"
               value={item.hsCode}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
@@ -77,15 +77,15 @@ function AddItem() {
 
             <input
               placeholder="Category Name"
-              name="categoryName"
-              value={item.categoryName}
+              id="categoryId"
+              value={item.categoryId}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
             />
 
             <input
               placeholder="Commodity Name"
-              name="commodityName"
+              id="commodityName"
               value={item.commodityName}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
@@ -93,7 +93,7 @@ function AddItem() {
 
             <input
               placeholder="Quantity"
-              name="quantity"
+              id="quantity"
               value={item.quantity}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
@@ -101,8 +101,8 @@ function AddItem() {
 
             <input
               placeholder="Import Amount"
-              name="importAmount"
-              value={item.importAmount}
+              id="importValue"
+              value={item.importValue}
               onChange={(e) => handleInputChange(item.id, e)}
               className="m-2"
             />
