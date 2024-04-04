@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 appsettings.Development.json
 /ImportExportTracker.WEB/appsettings.Development.json
+/ImportExportTracker.WEB/frontend/.vscode/launch.json

@@ -22,5 +22,12 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
             var serviceResponse = await _actionServices.Add(itemList);
             return Ok(serviceResponse);
         }
+
+        [HttpGet("fiscalYearList")]
+        public async Task<IActionResult> FiscalYearList()
+        {
+            var serviceResponse = await _actionServices.FiscalYearList();
+            return Ok(serviceResponse);
+        }
     }
 }
