@@ -14,7 +14,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
     {
         private const bool resulkt = true;
 
-        public async Task<ServiceResponse<bool>> Add(ImportExportModel model)
+        public async Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList)
         {
             return new ServiceResponse<bool>(true, "Okay" , MessageType.Success) { Data = true };
         }

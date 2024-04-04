@@ -17,9 +17,9 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
         }
 
         [HttpPost("addItem")]
-        public async Task<IActionResult> Add([FromBody] ImportExportModel model)
+        public async Task<IActionResult> Add([FromBody] List<ImportExportModel> itemList)
         {
-            var serviceResponse = await _actionServices.Add(model);
+            var serviceResponse = await _actionServices.Add(itemList);
             return Ok(serviceResponse);
         }
     }

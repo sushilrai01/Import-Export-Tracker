@@ -40,7 +40,7 @@ function AddItem() {
 
   const apiUrl = "https://localhost:7135/";
 
-  const addItem = async () => {
+  const saveItem = async () => {
     try {
       const response = await axios.post(
         apiUrl + "api/commodity/addItem",
@@ -110,6 +110,9 @@ function AddItem() {
         ))}
         <button onClick={handleAddRow} className="m-2">
           Add Row
+        </button>
+        <button onClick={saveItem} className="m-2">
+          Save Item(s)
         </button>
       </div>
     </>

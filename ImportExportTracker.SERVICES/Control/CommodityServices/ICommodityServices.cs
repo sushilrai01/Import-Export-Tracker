@@ -10,6 +10,6 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
     public interface ICommodityServices
     {
-        Task<ServiceResponse<bool>> Add(ImportExportModel model);
+        Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList);
     }
 }
