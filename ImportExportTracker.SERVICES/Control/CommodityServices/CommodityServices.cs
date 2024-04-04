@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ImportExportTracker.MODEL.Response;
+using ImportExportTracker.MODEL.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
@@ -32,8 +34,8 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                         Quantity = item.Quantity,
                         ImportRevenue = item.ImportRevenue,
                         ImportValue = item.ImportValue,
-                        FiscalYearId = 3, //item.FiscalYearId,
-                        MonthId = 5,//item.MonthId,
+                        FiscalYearId =  item.FiscalYearId,
+                        MonthId =  item.MonthId,
                         CreatedDate = DateTime.Now,
                     };
                     commodityList.Add(importData);
@@ -42,7 +44,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 
                 await ent.CommodityImports.AddRangeAsync(commodityList);
                 await ent.SaveChangesAsync();
-                return new ServiceResponse<bool>(true, "Okay", MessageType.Success) { Data = true };
+                return new ServiceResponse<bool>(true, "Added Successfully", MessageType.Success) { Data = true };
             }
             catch(Exception ex)
             {
@@ -50,6 +52,27 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
             }
 
            
+        }
+
+        public async Task<ServiceResponse<CommonModel<DropDownList>>> FiscalYearList()
+        {
+            using var ent = new ImportExportDbContext();
+
+            var model = new CommonModel<DropDownList>();
+            
+           var list = await ent.FiscalYears.Select(x =>new DropDownList
+           {
+               Text = x.FiscalYearTitle,
+               Value = x.FiscalYearId,
+           }).ToListAsync();
+
+            model.List = list;
+
+            return new ServiceResponse<CommonModel<DropDownList>>(true, "Success List", MessageType.Success)
+            {
+                Data = model
+            };
+            
         }
     }
 }

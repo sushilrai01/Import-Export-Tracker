@@ -23,4 +23,11 @@ namespace ImportExportTracker.MODEL.Control
         public int CreatedBy { get; set; }
         //public List<ImportExportModel> List { get; set; }
     }
+
+    public class DropDownList
+    {
+        public string Text { get; set; }
+        public int Value { get; set; }
+
+    }
 }
