@@ -32,4 +32,8 @@ public partial class CommodityImport
     public int? CreatedBy { get; set; }
 
     public virtual Category? Category { get; set; }
+
+    public virtual FiscalYear? FiscalYear { get; set; }
+
+    public virtual MonthsEnNp? Month { get; set; }
 }
