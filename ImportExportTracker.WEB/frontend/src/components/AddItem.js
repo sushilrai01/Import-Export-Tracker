@@ -2,27 +2,49 @@ import { useState } from "react";
 import axios from "axios";
 
 function AddItem() {
-  const [values, setValues] = useState({
-    chapterCode: "",
-    hsCode: "",
-    categoryName: "",
-    commodityName: "",
-    quantity: 0,
-    importAmount: 0,
-  });
+  const [items, setItems] = useState([
+    {
+      id: 1,
+      chapterCode: "",
+      hsCode: "",
+      categoryName: "",
+      commodityName: "",
+      quantity: "",
+      importAmount: "",
+    },
+  ]);
 
-  const getHandler = (name) => {
-    return (event) => {
-      setValues({ ...values, [name]: event.target.value });
+  const handleAddRow = () => {
+    const newItem = {
+      id: items.length + 1,
+      chapterCode: "",
+      hsCode: "",
+      categoryName: "",
+      commodityName: "",
+      quantity: "",
+      importAmount: "",
     };
+    setItems([...items, newItem]);
+  };
+
+  const handleInputChange = (id, e) => {
+    const { name, value } = e.target;
+    const updatedItems = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, [name]: value };
+      }
+      return item;
+    });
+    setItems(updatedItems);
   };
 
   const apiUrl = "https://localhost:7135/";
+
   const addItem = async () => {
     try {
       const response = await axios.post(
         apiUrl + "api/commodity/addItem",
-        values
+        items
       );
       console.log("Post created:", response.data);
       // Handle successful POST request here
@@ -35,38 +57,60 @@ function AddItem() {
   return (
     <>
       <div className="container">
-        <div>
-          <label>Chapter Code:</label>
-          <input
-            value={values.chapterCode}
-            onChange={getHandler("chapterCode")}
-          />
+        {items.map((item) => (
+          <div key={item.id}>
+            <input
+              placeholder="Chapter Code"
+              name="chapterCode"
+              value={item.chapterCode}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
 
-          <label>HsCode:</label>
-          <input value={values.hsCode} onChange={getHandler("hsCode")} />
+            <input
+              placeholder="HsCode"
+              name="hsCode"
+              value={item.hsCode}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
 
-          <label>Category Name:</label>
-          <input
-            value={values.categoryName}
-            onChange={getHandler("categoryName")}
-          />
+            <input
+              placeholder="Category Name"
+              name="categoryName"
+              value={item.categoryName}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
 
-          <label>Commodity Name:</label>
-          <input
-            value={values.commodityName}
-            onChange={getHandler("commodityName")}
-          />
+            <input
+              placeholder="Commodity Name"
+              name="commodityName"
+              value={item.commodityName}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
 
-          <label>Quantity:</label>
-          <input value={values.quantity} onChange={getHandler("quantity")} />
+            <input
+              placeholder="Quantity"
+              name="quantity"
+              value={item.quantity}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
 
-          <label>Import Amount:</label>
-          <input
-            value={values.importAmount}
-            onChange={getHandler("importAmount")}
-          />
-        </div>
-        <button onClick={addItem}>Add Item</button>
+            <input
+              placeholder="Import Amount"
+              name="importAmount"
+              value={item.importAmount}
+              onChange={(e) => handleInputChange(item.id, e)}
+              className="m-2"
+            />
+          </div>
+        ))}
+        <button onClick={handleAddRow} className="m-2">
+          Add Row
+        </button>
       </div>
     </>
   );
