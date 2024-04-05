@@ -33,6 +33,8 @@ public partial class ImportExportDbContext : DbContext
         {
             entity.ToTable("Category");
 
+            entity.HasIndex(e => e.ChapterCode, "UniqueChapterCode").IsUnique();
+
             entity.Property(e => e.CategoryTitle).HasMaxLength(200);
             entity.Property(e => e.ChapterCode)
                 .HasMaxLength(50)
@@ -52,6 +54,8 @@ public partial class ImportExportDbContext : DbContext
             entity.Property(e => e.HsCode)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.ImportRevenue).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.ImportValue).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Unit)
                 .HasMaxLength(50)
                 .IsUnicode(false);

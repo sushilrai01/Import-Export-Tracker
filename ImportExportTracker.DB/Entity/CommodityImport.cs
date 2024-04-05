@@ -23,9 +23,9 @@ public partial class CommodityImport
 
     public int? Quantity { get; set; }
 
-    public int? ImportValue { get; set; }
+    public decimal? ImportValue { get; set; }
 
-    public int? ImportRevenue { get; set; }
+    public decimal? ImportRevenue { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
