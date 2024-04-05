@@ -29,5 +29,11 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
             var serviceResponse = await _actionServices.FiscalYearList();
             return Ok(serviceResponse);
         }
+        [HttpPost("saveExcelData")]
+        public async Task<IActionResult> SaveExcelData(ImportExportMasterModel model)
+        {
+            var serviceResponse = await _actionServices.SaveExcelData(model);
+            return Ok(serviceResponse);
+        }
     }
 }
