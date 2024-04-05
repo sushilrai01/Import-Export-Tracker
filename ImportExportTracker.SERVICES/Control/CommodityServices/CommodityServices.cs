@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml.Office2010.Drawing;
 
 namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
@@ -82,14 +83,20 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
         {
             using var ent = new ImportExportDbContext();
             string reg = @"^[1-9]\d*(\.\d+)?$";
-
+            var chapterIdCodes = ent.Categories.Select(x => new
+            {
+                x.CategoryId,
+                x.ChapterCode
+            });
+           
             using (var stream = model.File.OpenReadStream())
             {
                 using (var workbook = new XLWorkbook(stream))
                 {
                     var worksheet = workbook.Worksheets.First(); // Assuming data is in the first worksheet
                     int startRow = 2; // Assuming data starts from the third row (excluding headers)
-
+                    var ExcelResultList = new ImportExportModel();
+                    List<CommodityImport> excelRows = new List<CommodityImport>();
                     while (!worksheet.Row(startRow).IsEmpty()) // Loop until an empty row is encountered
                     {
                         //long InitialKws = 0;
@@ -122,12 +129,15 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                                 ImportRevenue = (int)doubleValue;
                             }
                             // This is an item within the current location
-                            var masteritem = new ImportExportModel
+                            var chapterCode = hsCode.Substring(0, 2);
+                             int categoryId = chapterIdCodes.Where(x => x.ChapterCode == chapterCode).Select(x => x.CategoryId).FirstOrDefault();   
+
+                            var masteritem = new CommodityImport
                             {
                                 CommodityName = commodityName,
                                 HsCode = hsCode,
-                                ChapterCode = hsCode.Substring(0,2),
-                                CategoryId = model.CategoryId,
+                                ChapterCode = chapterCode,
+                                CategoryId = categoryId,
                                 Unit = unit ?? "na",
                                 Quantity = Quantity,
                                 ImportRevenue = ImportRevenue,
@@ -136,11 +146,18 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                                 MonthId = model.MonthId,
                                 CreatedDate = DateTime.Now,
                             };
+                            excelRows.Add(masteritem);
                             //PlanPolicyMasterList.Add(masteritem);
                             // Insert the header into the database
 
                         }
                         startRow++;
+                    }
+
+                    if (excelRows.Any())
+                    {
+                        await ent.CommodityImports.AddRangeAsync(excelRows);
+                        await ent.SaveChangesAsync();
                     }
                 }
             }
