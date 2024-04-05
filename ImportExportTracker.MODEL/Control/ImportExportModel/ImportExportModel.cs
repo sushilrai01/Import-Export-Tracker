@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ImportExportTracker.MODEL.Common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace ImportExportTracker.MODEL.Control
 {
-    public class ImportExportMasterModel
+    public class ImportExportMasterModel 
     {
         public IFormFile? File { get; set; }
         public int FiscalYearId { get; set; }
         public int MonthId { get; set; }
-        public int CategoryId { get; set; }
+        //public int CategoryId { get; set; }
     }
 
-    public class ImportExportModel
+    public class ImportExportModel : CommonModel<ImportExportModel>
     {
         public int CommodityId { get; set; }
         public string CommodityName { get; set; }
