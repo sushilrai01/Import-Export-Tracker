@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using ImportExportTracker.MODEL.Response;
 using ImportExportTracker.MODEL.Common;
 using Microsoft.EntityFrameworkCore;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.Text.RegularExpressions;
 
 namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
@@ -73,6 +76,76 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                 Data = model
             };
             
+        }
+
+        public async Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model)
+        {
+            using var ent = new ImportExportDbContext();
+            string reg = @"^[1-9]\d*(\.\d+)?$";
+
+            using (var stream = model.File.OpenReadStream())
+            {
+                using (var workbook = new XLWorkbook(stream))
+                {
+                    var worksheet = workbook.Worksheets.First(); // Assuming data is in the first worksheet
+                    int startRow = 2; // Assuming data starts from the third row (excluding headers)
+
+                    while (!worksheet.Row(startRow).IsEmpty()) // Loop until an empty row is encountered
+                    {
+                        //long InitialKws = 0;
+                        int Quantity = 0;
+                        int ImportRevenue = 0;
+                        int ImportValue = 0;
+
+                        string hsCode = worksheet.Cell(startRow, 1).Value.ToString();
+                        string commodityName = worksheet.Cell(startRow, 2).Value.ToString();
+                        string unit = worksheet.Cell(startRow, 3).Value.ToString();
+                        var quantity = worksheet.Cell(startRow, 4).Value.ToString();
+                        var importValue = worksheet.Cell(startRow, 5).Value.ToString();
+                        var importRevenue = worksheet.Cell(startRow, 6).Value.ToString();
+
+                        if (!string.IsNullOrWhiteSpace(hsCode))
+                        {
+                            if (Regex.IsMatch(quantity, reg))
+                            {
+                                double dValue = double.Parse(quantity);
+                                Quantity = (int)dValue;
+                            }
+                            if (Regex.IsMatch(importValue, reg))
+                            {
+                                double doubleValue = double.Parse(importValue);
+                                ImportValue = (int)doubleValue;
+                            }
+                            if (Regex.IsMatch(importRevenue, reg))
+                            {
+                                double doubleValue = double.Parse(importRevenue);
+                                ImportRevenue = (int)doubleValue;
+                            }
+                            // This is an item within the current location
+                            var masteritem = new ImportExportModel
+                            {
+                                CommodityName = commodityName,
+                                HsCode = hsCode,
+                                ChapterCode = hsCode.Substring(0,2),
+                                CategoryId = model.CategoryId,
+                                Unit = unit ?? "na",
+                                Quantity = Quantity,
+                                ImportRevenue = ImportRevenue,
+                                ImportValue = ImportValue,
+                                FiscalYearId = model.FiscalYearId,
+                                MonthId = model.MonthId,
+                                CreatedDate = DateTime.Now,
+                            };
+                            //PlanPolicyMasterList.Add(masteritem);
+                            // Insert the header into the database
+
+                        }
+                        startRow++;
+                    }
+                }
+            }
+
+            return new ServiceResponse<bool>(true, "Data Uploaded Successfully");
         }
     }
 }

@@ -14,5 +14,6 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
     {
         Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList);
         Task<ServiceResponse<CommonModel<DropDownList>>> FiscalYearList();
+        Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model);
     }
 }
