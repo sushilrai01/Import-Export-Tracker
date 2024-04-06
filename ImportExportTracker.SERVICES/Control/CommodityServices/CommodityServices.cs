@@ -82,7 +82,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
         public async Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model)
         {
             using var ent = new ImportExportDbContext();
-            string reg = @"^[1-9]\d*(\.\d+)?$";
+            string reg = @"^[0-9]\d*(\.\d+)?$";
             var chapterIdCodes = ent.Categories.Select(x => new
             {
                 x.CategoryId,
@@ -100,9 +100,9 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                     while (!worksheet.Row(startRow).IsEmpty()) // Loop until an empty row is encountered
                     {
                         //long InitialKws = 0;
-                        int Quantity = 0;
-                        int ImportRevenue = 0;
-                        int ImportValue = 0;
+                        decimal Quantity = 0;
+                        decimal ImportRevenue = 0;
+                        decimal ImportValue = 0;
 
                         string hsCode = worksheet.Cell(startRow, 1).Value.ToString();
                         string commodityName = worksheet.Cell(startRow, 2).Value.ToString();
@@ -116,17 +116,17 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                             if (Regex.IsMatch(quantity, reg))
                             {
                                 double dValue = double.Parse(quantity);
-                                Quantity = (int)dValue;
+                                Quantity = (decimal)dValue;
                             }
                             if (Regex.IsMatch(importValue, reg))
                             {
                                 double doubleValue = double.Parse(importValue);
-                                ImportValue = (int)doubleValue;
+                                ImportValue = (decimal)doubleValue;
                             }
                             if (Regex.IsMatch(importRevenue, reg))
                             {
                                 double doubleValue = double.Parse(importRevenue);
-                                ImportRevenue = (int)doubleValue;
+                                ImportRevenue = (decimal)doubleValue;
                             }
                             // This is an item within the current location
                             var chapterCode = hsCode.Substring(0, 2);
@@ -147,7 +147,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                                 CreatedDate = DateTime.Now,
                             };
                             excelRows.Add(masteritem);
-                            //PlanPolicyMasterList.Add(masteritem);
+                            //PlanPolicyMasterList.Add(masteritemS);
                             // Insert the header into the database
 
                         }

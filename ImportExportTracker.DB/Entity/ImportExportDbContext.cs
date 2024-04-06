@@ -56,6 +56,7 @@ public partial class ImportExportDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ImportRevenue).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ImportValue).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Quantity).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Unit)
                 .HasMaxLength(50)
                 .IsUnicode(false);
