@@ -11,13 +11,13 @@ public partial class CommodityImport
 
     public string? HsCode { get; set; }
 
-    public int? CategoryId { get; set; }
+    public int CategoryId { get; set; }
 
     public string? ChapterCode { get; set; }
 
-    public int? FiscalYearId { get; set; }
+    public int FiscalYearId { get; set; }
 
-    public int? MonthId { get; set; }
+    public int MonthId { get; set; }
 
     public string? Unit { get; set; }
 
@@ -31,9 +31,9 @@ public partial class CommodityImport
 
     public int? CreatedBy { get; set; }
 
-    public virtual Category? Category { get; set; }
+    public virtual Category Category { get; set; } = null!;
 
-    public virtual FiscalYear? FiscalYear { get; set; }
+    public virtual FiscalYear FiscalYear { get; set; } = null!;
 
-    public virtual MonthsEnNp? Month { get; set; }
+    public virtual MonthsEnNp Month { get; set; } = null!;
 }
