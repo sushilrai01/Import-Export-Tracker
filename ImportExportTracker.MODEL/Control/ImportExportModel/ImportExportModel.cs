@@ -23,12 +23,15 @@ namespace ImportExportTracker.MODEL.Control
         public string HsCode { get; set; }
         public string ChapterCode { get; set; }
         public int FiscalYearId { get; set; }
+        public string FiscalYearTitle { get; set; }
         public int MonthId { get; set; }
+        public string MonthNp { get; set; }
         public int CategoryId { get; set; }
+        public string CategoryTitle { get; set; }
         public string? Unit { get; set; }
-        public int Quantity { get; set; }
-        public int ImportValue { get; set; }
-        public int ImportRevenue { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal ImportValue { get; set; }
+        public decimal ImportRevenue { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         //public List<ImportExportModel> List { get; set; }
