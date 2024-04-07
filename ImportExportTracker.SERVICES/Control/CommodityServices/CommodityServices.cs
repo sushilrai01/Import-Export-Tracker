@@ -19,7 +19,11 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
     public class CommodityServices : ICommodityServices
     {
         private const bool resulkt = true;
-
+        public IDbOptions _dboptions;
+        public CommodityServices(IDbOptions dboptions)
+        {
+            _dboptions = dboptions;
+        }
         public async Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList)
         {
             using var ent = new ImportExportDbContext();
@@ -164,5 +168,74 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 
             return new ServiceResponse<bool>(true, "Data Uploaded Successfully");
         }
+
+        public async Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(int FiscalYearId = 2)
+        {
+
+            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
+            CommonModel<ReportImportExportModel> model = new CommonModel<ReportImportExportModel>();
+
+            var obj = await ent.CommodityImports
+                .Include(x => x.Category)
+                .Include(x => x.FiscalYear)
+                .Include(x => x.Month)
+                .Select(x => new
+                {
+                    CommodityId = x.CommodityId,
+                    CommodityName = x.CommodityName,
+                    HsCode = x.HsCode,
+                    CategoryId = x.Category.CategoryId,
+                    CategoryTitle = x.Category.CategoryTitle,
+                    ChapterCode = x.Category.ChapterCode,
+                    FiscalYearId = x.FiscalYearId,
+                    FiscalYearTitle = x.FiscalYear.FiscalYearTitle,
+                    MonthNp = x.Month.MonthNp,
+                    Unit = x.Unit,
+                    Quantity = x.Quantity,
+                    ImportValue = x.ImportValue,
+                    ImportRevenue = x.ImportRevenue,
+
+                }).ToListAsync();
+
+            if(FiscalYearId > 0)
+            {
+                obj = obj.Where(x => x.FiscalYearId == FiscalYearId).ToList();
+                
+            }
+           
+            //______Report of Commodity Import as per Commodities (individual)
+
+            var resultList = obj.GroupBy(x => new
+            {
+                x.CategoryId,
+                x.CategoryTitle,
+                x.CommodityName,
+                x.CommodityId,
+                x.HsCode,
+                x.FiscalYearTitle
+            })
+                .Select(group => new ReportImportExportModel
+                {
+                CommodityId = group.Key.CommodityId,
+                CommodityName = group.Key.CommodityName,
+                HsCode = group.Key.HsCode,
+                CategoryId = group.Key.CategoryId,
+                CategoryTitle = group.Key.CategoryTitle,
+                FiscalYearTitle = group.Key.FiscalYearTitle,
+                TotalQuantity = (decimal) group.Sum(y => y.Quantity??0),
+                TotalImportValue = group.Sum(x => x.ImportValue??0),
+                TotalImportRevenue = group.Sum(x => x.ImportRevenue??0),
+            }).OrderByDescending(x => x.TotalImportValue).ToList();
+
+            int countR = resultList.Count();
+
+            model.List = resultList;
+
+            //______Report of Commodity Import as per Commodities (individual)
+            //TODO
+
+            return new ServiceResponse<CommonModel<ReportImportExportModel>>(true, "Data Uploaded Successfully", MessageType.Success) { Data = model };
+        }
+
     }
 }
