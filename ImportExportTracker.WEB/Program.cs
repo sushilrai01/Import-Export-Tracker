@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ImportExportTracker.DB.Entity;
 using ImportExportTracker.SERVICES.Control.CommodityServices;
-
+using ImportExportTracker.DB;
 
 var AllowCors = "_allowCors";
 
@@ -11,10 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // DbContext configuration
+builder.Services.AddOptions();
 builder.Services.AddDbContext<ImportExportDbContext>(options =>
 options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
 
+builder.Services.AddTransient<IDbOptions, DbOptions>();
 builder.Services.AddScoped<ICommodityServices, CommodityServices>();
 
 builder.Services.AddCors(options =>
