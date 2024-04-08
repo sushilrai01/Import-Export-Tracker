@@ -26,7 +26,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
         }
         public async Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList)
         {
-            using var ent = new ImportExportDbContext();
+            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
             List<CommodityImport> commodityList = new List<CommodityImport>();
             try
             {
@@ -64,7 +64,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 
         public async Task<ServiceResponse<CommonModel<DropDownList>>> FiscalYearList()
         {
-            using var ent = new ImportExportDbContext();
+            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
 
             var model = new CommonModel<DropDownList>();
             
@@ -85,7 +85,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 
         public async Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model)
         {
-            using var ent = new ImportExportDbContext();
+            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
             string reg = @"^[0-9]\d*(\.\d+)?$";
             var chapterIdCodes = ent.Categories.Select(x => new
             {
