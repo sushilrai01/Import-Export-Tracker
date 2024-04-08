@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ImportExportTracker.DB.Entity;
 using ImportExportTracker.SERVICES.Control.CommodityServices;
 using ImportExportTracker.DB;
+using ImportExportTracker.SERVICES;
 
 var AllowCors = "_allowCors";
 
@@ -17,6 +18,7 @@ options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
 
 builder.Services.AddTransient<IDbOptions, DbOptions>();
+builder.Services.AddScoped<ISelectServices, SelectServices>();
 builder.Services.AddScoped<ICommodityServices, CommodityServices>();
 
 builder.Services.AddCors(options =>
