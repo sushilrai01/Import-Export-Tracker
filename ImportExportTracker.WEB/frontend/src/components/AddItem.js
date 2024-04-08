@@ -3,6 +3,7 @@ import axios from "axios";
 
 function AddItem() {
   const ddlMonth = [
+    { text: "--Select--", value: "" },
     { text: "Baishakh", value: 1 },
     { text: "Jeth", value: 2 },
     { text: "Asar", value: 3 },
@@ -20,7 +21,7 @@ function AddItem() {
   const dropDownStyle = {
     width: "125px",
     height: "30px",
-    "margin-right": "5px",
+    marginRight: "5px",
   };
 
   const [items, setItems] = useState([
@@ -85,17 +86,18 @@ function AddItem() {
   };
 
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
-
   useEffect(() => {
+    const tempSelectObj = [{ text: "--Select--", value: "" }];
+
     axios
-      .get(apiUrl + "api/commodity/fiscalYearList")
+      .get(apiUrl + "api/select/getFiscalYear")
       .then((response) => {
         console.log("response__data");
         console.log(response);
-        console.log(response.data.msg);
-        console.log(response.data.data.list);
+        console.log(response.data);
+        const fiscalYears = response.data;
 
-        setddlFiscalYear(response.data.data.list);
+        setddlFiscalYear([...tempSelectObj, ...fiscalYears]);
       })
       .catch((error) => {
         console.error("Error:", error);

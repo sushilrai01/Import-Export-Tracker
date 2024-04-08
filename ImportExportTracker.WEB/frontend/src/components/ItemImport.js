@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ItemImport() {
   const [xlImport, setXlImport] = useState({
@@ -50,12 +50,12 @@ function ItemImport() {
 
   useEffect(() => {
     axios
-      .get(apiUrl + "api/commodity/fiscalYearList")
+      .get(apiUrl + "api/select/getFiscalYear")
       .then((response) => {
         console.log("response__data");
         console.log(response.data);
 
-        setddlFiscalYear(response.data.data.list);
+        setddlFiscalYear(response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
