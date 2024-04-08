@@ -19,14 +19,14 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
     public class CommodityServices : ICommodityServices
     {
         private const bool resulkt = true;
-        public IDbOptions _dboptions;
+        public IDbOptions _dbOptions;
         public CommodityServices(IDbOptions dboptions)
         {
-            _dboptions = dboptions;
+            _dbOptions = dboptions;
         }
         public async Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList)
         {
-            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
+            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
             List<CommodityImport> commodityList = new List<CommodityImport>();
             try
             {
@@ -62,30 +62,9 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
            
         }
 
-        public async Task<ServiceResponse<CommonModel<DropDownList>>> FiscalYearList()
-        {
-            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
-
-            var model = new CommonModel<DropDownList>();
-            
-           var list = await ent.FiscalYears.Select(x =>new DropDownList
-           {
-               Text = x.FiscalYearTitle,
-               Value = x.FiscalYearId,
-           }).ToListAsync();
-
-            model.List = list;
-
-            return new ServiceResponse<CommonModel<DropDownList>>(true, "Success List", MessageType.Success)
-            {
-                Data = model
-            };
-            
-        }
-
         public async Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model)
         {
-            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
+            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
             string reg = @"^[0-9]\d*(\.\d+)?$";
             var chapterIdCodes = ent.Categories.Select(x => new
             {
@@ -172,7 +151,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
         public async Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(int FiscalYearId = 2)
         {
 
-            using var ent = new ImportExportDbContext(_dboptions.ConOptions);
+            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
             CommonModel<ReportImportExportModel> model = new CommonModel<ReportImportExportModel>();
 
             var obj = await ent.CommodityImports
