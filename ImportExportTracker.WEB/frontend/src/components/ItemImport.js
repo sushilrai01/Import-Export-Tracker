@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function ItemImport() {
   const [xlImport, setXlImport] = useState({
@@ -7,6 +8,9 @@ function ItemImport() {
     monthId: "",
     commodityExcel: null,
   });
+
+  //___Use to navigate to another component after certain events or actions
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -69,6 +73,10 @@ function ItemImport() {
         apiUrl + "api/commodity/saveExcelData",
         formData
       );
+
+      if (!response.data.data) {
+        navigate("/"); //Navigate to HOME
+      }
       console.log("Post created:", response.data);
       // Handle successful POST request here
     } catch (error) {
@@ -91,7 +99,6 @@ function ItemImport() {
             </option>
           ))}
         </select>
-
         <select
           name="monthId"
           onChange={(e) => handleInputChange(e)}
@@ -120,5 +127,4 @@ function ItemImport() {
     </>
   );
 }
-
 export default ItemImport;
