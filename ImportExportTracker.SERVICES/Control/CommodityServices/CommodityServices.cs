@@ -58,7 +58,6 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
             {
                 throw;
             }
-
            
         }
 
@@ -158,6 +157,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                 .Include(x => x.Category)
                 .Include(x => x.FiscalYear)
                 .Include(x => x.Month)
+                .Where(x => x.FiscalYearId == FiscalYearId)
                 .Select(x => new
                 {
                     CommodityId = x.CommodityId,
@@ -175,12 +175,6 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                     ImportRevenue = x.ImportRevenue,
 
                 }).ToListAsync();
-
-            if(FiscalYearId > 0)
-            {
-                obj = obj.Where(x => x.FiscalYearId == FiscalYearId).ToList();
-                
-            }
            
             //______Report of Commodity Import as per Commodities (individual)
 
@@ -193,8 +187,8 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                 x.HsCode,
                 x.FiscalYearTitle
             })
-                .Select(group => new ReportImportExportModel
-                {
+            .Select(group => new ReportImportExportModel
+            {
                 CommodityId = group.Key.CommodityId,
                 CommodityName = group.Key.CommodityName,
                 HsCode = group.Key.HsCode,
