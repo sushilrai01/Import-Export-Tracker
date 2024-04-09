@@ -1,10 +1,10 @@
-// import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Home from "./components/Home";
 import AddItem from "./components/AddItem";
 import Navbar from "./components/Navbar";
 import ItemImport from "./components/ItemImport";
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CommodityReport from "./components/CommodityReport";
 
 function App() {
   return (
@@ -14,6 +14,11 @@ function App() {
         <Route exact path="/" element={<Home />}></Route>
         <Route exact path="/form" element={<AddItem />}></Route>
         <Route exact path="/aboutItemImport" element={<ItemImport />}></Route>
+        <Route
+          exact
+          path="/reportCommodityImport"
+          element={<CommodityReport />}
+        ></Route>
       </Routes>
     </>
   );

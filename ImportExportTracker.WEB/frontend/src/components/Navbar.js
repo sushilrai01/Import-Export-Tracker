@@ -35,9 +35,15 @@ function Navbar(props) {
                   Form Submission
                 </Link>
               </li>
+
               <li className="nav-item">
                 <Link className="nav-link" to="/aboutItemImport">
-                  About Us
+                  Upload Commodities
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/reportCommodityImport">
+                  Commodity Report
                 </Link>
               </li>
             </ul>
