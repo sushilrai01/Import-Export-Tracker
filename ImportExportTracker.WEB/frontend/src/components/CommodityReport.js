@@ -185,13 +185,13 @@ const CommodityReport = () => {
                   commodities.map((item, i) => (
                     <tr key={i}>
                       <td>{i + 1}</td>
-                      <td>{item.CategoryTitle}</td>
-                      <td>{item.CommodityName}</td>
-                      <td>{item.HsCode}</td>
-                      <td>{item.FiscalYearTitle}</td>
-                      <td>{item.TotalQuantity}</td>
-                      <td>{item.TotalImportValue}</td>
-                      <td>{item.TotalImportRevenue}</td>
+                      <td>{item.categoryTitle}</td>
+                      <td>{item.commodityName}</td>
+                      <td>{item.hsCode}</td>
+                      <td>{item.fiscalYearTitle}</td>
+                      <td>{item.totalQuantity}</td>
+                      <td>{item.totalImportValue}</td>
+                      <td>{item.totalImportRevenue}</td>
                     </tr>
                   ))}
               </tbody>
