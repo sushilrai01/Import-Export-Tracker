@@ -174,38 +174,35 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                     ImportRevenue = x.ImportRevenue,
 
                 }).ToListAsync();
-           
+
             //______Report of Commodity Import as per Commodities (individual)
-            if(filterModel.ReportTypeId != 0)
+
+            if (filterModel.ReportTypeId == 1)
             {
-                if (filterModel.ReportTypeId == 1)
+                var resultList = obj.GroupBy(x => new
                 {
-                    var resultList = obj.GroupBy(x => new
-                    {
-                        x.CategoryId,
-                        x.CategoryTitle,
-                        x.CommodityName,
-                        x.CommodityId,
-                        x.HsCode,
-                        x.FiscalYearTitle
-                    })
-                    .Select(group => new ReportImportExportModel
-                    {
-                        CommodityId = group.Key.CommodityId,
-                        CommodityName = group.Key.CommodityName,
-                        HsCode = group.Key.HsCode,
-                        CategoryId = group.Key.CategoryId,
-                        CategoryTitle = group.Key.CategoryTitle,
-                        FiscalYearTitle = group.Key.FiscalYearTitle,
-                        TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
-                        TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
-                        TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
-                    }).OrderByDescending(x => x.TotalImportValue).ToList();
+                    x.CategoryId,
+                    x.CategoryTitle,
+                    x.CommodityName,
+                    x.CommodityId,
+                    x.HsCode,
+                    x.FiscalYearTitle
+                })
+                .Select(group => new ReportImportExportModel
+                {
+                    CommodityId = group.Key.CommodityId,
+                    CommodityName = group.Key.CommodityName,
+                    HsCode = group.Key.HsCode,
+                    CategoryId = group.Key.CategoryId,
+                    CategoryTitle = group.Key.CategoryTitle,
+                    FiscalYearTitle = group.Key.FiscalYearTitle,
+                    TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
+                    TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
+                    TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
+                }).OrderByDescending(x => x.TotalImportValue).ToList();
 
-                    int countR = resultList.Count();
-                    model.List = resultList;
-
-                }
+                int countR = resultList.Count();
+                model.List = resultList;
             }
             else
             {
