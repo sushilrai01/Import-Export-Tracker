@@ -14,7 +14,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
     {
         Task<ServiceResponse<bool>> Add(List<ImportExportModel> itemList);
         Task<ServiceResponse<bool>> SaveExcelData(ImportExportMasterModel model);
-        Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(int FiscalYearId);
+        Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(FilterReportModel filterModel);
 
     }
 }
