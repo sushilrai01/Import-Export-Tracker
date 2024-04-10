@@ -15,60 +15,21 @@ const CommodityReport = () => {
     background: "rgb(187 187 187)",
   };
 
-  const reportCommodities = [
-    {
-      CommodityId: 11,
-      CommodityName: "Ram",
-      HsCode: "0123232",
-      CategoryId: 123,
-      CategoryTitle: "alivedd",
-      FiscalYearTitle: "2080/81",
-      TotalQuantity: 1200,
-      TotalImportValue: 5585,
-      TotalImportRevenue: 5858,
-    },
-    {
-      CommodityId: 11,
-      CommodityName: "Ram",
-      HsCode: "0123232",
-      CategoryId: 123,
-      CategoryTitle: "alivedd",
-      FiscalYearTitle: "2080/81",
-      TotalQuantity: 1200,
-      TotalImportValue: 5585,
-      TotalImportRevenue: 5858,
-    },
-    {
-      CommodityId: 11,
-      CommodityName: "Ram",
-      HsCode: "0123232",
-      CategoryId: 123,
-      CategoryTitle: "alivedd",
-      FiscalYearTitle: "2080/81",
-      TotalQuantity: 1200,
-      TotalImportValue: 5585,
-      TotalImportRevenue: 5858,
-    },
-    {
-      CommodityId: 11,
-      CommodityName: "Ram",
-      HsCode: "0123232",
-      CategoryId: 123,
-      CategoryTitle: "alivedd",
-      FiscalYearTitle: "2080/81",
-      TotalQuantity: 1200,
-      TotalImportValue: 5585,
-      TotalImportRevenue: 5858,
-    },
-  ];
-  const [commodities, setCommodities] = useState(reportCommodities);
-
-  const [ddlFilter, setDdlFilter] = useState();
+  const [commodities, setCommodities] = useState();
+  const [ddlFiscalYearId, setDdlFiscalYearId] = useState();
+  const [ddlFilterId, setDdlFilterId] = useState();
 
   //______API CALLING______
   const apiUrl = "https://localhost:7135/";
 
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
+
+  const filterParam = {
+    fiscalYearId: "",
+    reportTypeId: "",
+  };
+
+  const [filterReportModel, setFilterReportModel] = useState({});
 
   useEffect(() => {
     const tempSelectObj = [{ text: "--Select--", value: "" }];
@@ -89,18 +50,39 @@ const CommodityReport = () => {
 
   //____TO DO_____
   const handleInputChange = (e) => {
-    // const { name, value } = e.target;
-    //___handle here______-_-_-_-_-_-
+    setDdlFiscalYearId(e.target.value);
   };
 
+  const getFilteredReport = (e) => {
+    setDdlFilterId(e.target.value);
+    setFilterReportModel({
+      fiscalYearId: ddlFiscalYearId,
+      reportTypeId: e.target.value,
+    });
+  };
+
+  function searchReport() {
+    console.log(filterReportModel.fiscalYearId, filterReportModel.reportTypeId);
+    axios
+      .post(apiUrl + "api/commodity/reportCommodityImport", filterReportModel)
+      .then((response) => {
+        console.log("response__data_report");
+        console.log(response.data);
+        debugger;
+        setCommodities(response.data.data.list);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
   return (
     <>
       <div className="container">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingOne">
+        <div className="accordion accordion-flush" id="accordionFlushExample">
+          <div className="accordion-item">
+            <h2 className="accordion-header" id="flush-headingOne">
               <button
-                class="accordion-button collapsed"
+                className="accordion-button collapsed"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseOne"
@@ -113,11 +95,11 @@ const CommodityReport = () => {
             </h2>
             <div
               id="flush-collapseOne"
-              class="accordion-collapse collapse"
+              className="accordion-collapse collapse"
               aria-labelledby="flush-headingOne"
               data-bs-parent="#accordionFlushExample"
             >
-              <div class="accordion-body" style={accordionContentStyle}>
+              <div className="accordion-body" style={accordionContentStyle}>
                 <div className="row">
                   <div className="col-md-2">
                     <select
@@ -134,16 +116,18 @@ const CommodityReport = () => {
                   </div>
                   <div className="col-md-2">
                     <select
-                      onChange={(e) => setDdlFilter(e.target.value)}
+                      onChange={(e) => getFilteredReport(e)}
                       style={dropDownStyle}
                     >
                       <option value="">--Select--</option>
-                      <option value="1">Category Wise</option>
-                      <option value="2">Commodity Wise</option>
+                      <option value="1">Commodity Wise</option>
+                      <option value="2">Category Wise</option>
                     </select>
                   </div>
                   <div className="col-md-2">
-                    <button className="btn btn-success">Search</button>
+                    <button className="btn btn-success" onClick={searchReport}>
+                      Search
+                    </button>
                   </div>
                 </div>
               </div>
@@ -154,53 +138,63 @@ const CommodityReport = () => {
         <hr></hr>
 
         <div>
-          {ddlFilter == 1 && (
+          {filterReportModel.reportTypeId == 2 && (
             <table className="table table-responsive table-bordered">
-              <tr>
-                <th>SN</th>
-                <th>Category</th>
-                <th>Fiscal Year</th>
-                <th>Total Quantity</th>
-                <th>Total Import Value</th>
-                <th>Total Import Revenue</th>
-              </tr>
-              {commodities.map((item, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>{item.CategoryTitle}</td>
-                  <td>{item.FiscalYearTitle}</td>
-                  <td>{item.TotalQuantity}</td>
-                  <td>{item.TotalImportValue}</td>
-                  <td>{item.TotalImportRevenue}</td>
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Category</th>
+                  <th>Fiscal Year</th>
+                  <th>Total Quantity</th>
+                  <th>Total Import Value</th>
+                  <th>Total Import Revenue</th>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {commodities != null &&
+                  commodities.map((item, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{item.categoryTitle}</td>
+                      <td>{item.fiscalYearTitle}</td>
+                      <td>{item.totalQuantity}</td>
+                      <td>{item.totalImportValue}</td>
+                      <td>{item.totalImportRevenue}</td>
+                    </tr>
+                  ))}
+              </tbody>
             </table>
           )}
 
-          {ddlFilter == 2 && (
+          {filterReportModel.reportTypeId == 1 && (
             <table className="table table-responsive table-bordered">
-              <tr>
-                <th>SN</th>
-                <th>Category</th>
-                <th>Commodity Name</th>
-                <th>HSCODE</th>
-                <th>Fiscal Year</th>
-                <th>Total Quantity</th>
-                <th>Total Import Value</th>
-                <th>Total Import Revenue</th>
-              </tr>
-              {commodities.map((item, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>{item.CategoryTitle}</td>
-                  <td>{item.CommodityName}</td>
-                  <td>{item.HsCode}</td>
-                  <td>{item.FiscalYearTitle}</td>
-                  <td>{item.TotalQuantity}</td>
-                  <td>{item.TotalImportValue}</td>
-                  <td>{item.TotalImportRevenue}</td>
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Category</th>
+                  <th>Commodity Name</th>
+                  <th>HSCODE</th>
+                  <th>Fiscal Year</th>
+                  <th>Total Quantity</th>
+                  <th>Total Import Value</th>
+                  <th>Total Import Revenue</th>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {commodities != null &&
+                  commodities.map((item, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{item.CategoryTitle}</td>
+                      <td>{item.CommodityName}</td>
+                      <td>{item.HsCode}</td>
+                      <td>{item.FiscalYearTitle}</td>
+                      <td>{item.TotalQuantity}</td>
+                      <td>{item.TotalImportValue}</td>
+                      <td>{item.TotalImportRevenue}</td>
+                    </tr>
+                  ))}
+              </tbody>
             </table>
           )}
         </div>
