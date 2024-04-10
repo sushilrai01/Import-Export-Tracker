@@ -228,11 +228,7 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 
             }
 
-
-
-          
-
-            return new ServiceResponse<CommonModel<ReportImportExportModel>>(true, "Data Uploaded Successfully", MessageType.Success) { Data = model };
+            return new ServiceResponse<CommonModel<ReportImportExportModel>>(true, "Report Generated!", MessageType.Success) { Data = model };
         }
 
     }
