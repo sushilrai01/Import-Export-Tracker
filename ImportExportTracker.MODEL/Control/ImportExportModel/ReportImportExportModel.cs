@@ -25,4 +25,11 @@ namespace ImportExportTracker.MODEL.Control
         public DateTime CreatedDate { get; set; }
     }
 
+    public class FilterReportModel {
+        public int FiscalYearId { get; set; }
+
+        public int ReportTypeId { get; set; }
+    }
+
+
 }

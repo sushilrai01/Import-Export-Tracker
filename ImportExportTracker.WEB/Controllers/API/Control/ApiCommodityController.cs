@@ -30,9 +30,9 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
             return Ok(serviceResponse);
         }
         [HttpPost("reportCommodityImport")]
-        public async Task<IActionResult> ReportCommodityImport(ImportExportModel model)
+        public async Task<IActionResult> ReportCommodityImport(FilterReportModel filterModel)
         {
-            var serviceResponse = await _actionServices.ReportCommodityImport(2);
+            var serviceResponse = await _actionServices.ReportCommodityImport(filterModel);
             return Ok(serviceResponse);
         }
     }

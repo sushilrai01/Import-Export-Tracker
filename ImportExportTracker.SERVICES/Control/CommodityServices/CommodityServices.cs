@@ -18,7 +18,6 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
     public class CommodityServices : ICommodityServices
     {
-        private const bool resulkt = true;
         public IDbOptions _dbOptions;
         public CommodityServices(IDbOptions dboptions)
         {
@@ -147,18 +146,18 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
             return new ServiceResponse<bool>(true, "Data Uploaded Successfully");
         }
 
-        public async Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(int FiscalYearId = 2)
+        public async Task<ServiceResponse<CommonModel<ReportImportExportModel>>> ReportCommodityImport(FilterReportModel filterModel)
         {
-
             using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
+
             CommonModel<ReportImportExportModel> model = new CommonModel<ReportImportExportModel>();
 
             var obj = await ent.CommodityImports
                 .Include(x => x.Category)
                 .Include(x => x.FiscalYear)
                 .Include(x => x.Month)
-                .Where(x => x.FiscalYearId == FiscalYearId)
-                .Select(x => new
+                .Where(x => x.FiscalYearId == filterModel.FiscalYearId)
+                .Select(x => new 
                 {
                     CommodityId = x.CommodityId,
                     CommodityName = x.CommodityName,
@@ -177,35 +176,64 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                 }).ToListAsync();
            
             //______Report of Commodity Import as per Commodities (individual)
-
-            var resultList = obj.GroupBy(x => new
+            if(filterModel.ReportTypeId != 0)
             {
-                x.CategoryId,
-                x.CategoryTitle,
-                x.CommodityName,
-                x.CommodityId,
-                x.HsCode,
-                x.FiscalYearTitle
-            })
-            .Select(group => new ReportImportExportModel
+                if (filterModel.ReportTypeId == 1)
+                {
+                    var resultList = obj.GroupBy(x => new
+                    {
+                        x.CategoryId,
+                        x.CategoryTitle,
+                        x.CommodityName,
+                        x.CommodityId,
+                        x.HsCode,
+                        x.FiscalYearTitle
+                    })
+                    .Select(group => new ReportImportExportModel
+                    {
+                        CommodityId = group.Key.CommodityId,
+                        CommodityName = group.Key.CommodityName,
+                        HsCode = group.Key.HsCode,
+                        CategoryId = group.Key.CategoryId,
+                        CategoryTitle = group.Key.CategoryTitle,
+                        FiscalYearTitle = group.Key.FiscalYearTitle,
+                        TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
+                        TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
+                        TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
+                    }).OrderByDescending(x => x.TotalImportValue).ToList();
+
+                    int countR = resultList.Count();
+                    model.List = resultList;
+
+                }
+            }
+            else
             {
-                CommodityId = group.Key.CommodityId,
-                CommodityName = group.Key.CommodityName,
-                HsCode = group.Key.HsCode,
-                CategoryId = group.Key.CategoryId,
-                CategoryTitle = group.Key.CategoryTitle,
-                FiscalYearTitle = group.Key.FiscalYearTitle,
-                TotalQuantity = (decimal) group.Sum(y => y.Quantity??0),
-                TotalImportValue = group.Sum(x => x.ImportValue??0),
-                TotalImportRevenue = group.Sum(x => x.ImportRevenue??0),
-            }).OrderByDescending(x => x.TotalImportValue).ToList();
+                //______Report of Commodity Import as per Category (individual)
+                var resultList = obj.GroupBy(x => new
+                {
+                    x.CategoryId,
+                    x.CategoryTitle,
+                    x.FiscalYearTitle
+                })
+               .Select(group => new ReportImportExportModel
+               {
+                   CategoryId = group.Key.CategoryId,
+                   CategoryTitle = group.Key.CategoryTitle,
+                   FiscalYearTitle = group.Key.FiscalYearTitle,
+                   TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
+                   TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
+                   TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
+               }).OrderByDescending(x => x.TotalImportValue).ToList();
 
-            int countR = resultList.Count();
+                int countR = resultList.Count();
+                model.List = resultList;
 
-            model.List = resultList;
+            }
 
-            //______Report of Commodity Import as per Commodities (individual)
-            //TODO
+
+
+          
 
             return new ServiceResponse<CommonModel<ReportImportExportModel>>(true, "Data Uploaded Successfully", MessageType.Success) { Data = model };
         }
