@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import AddItem from "./components/AddItem";
 import Navbar from "./components/Navbar";
-import ItemImport from "./components/ItemImport";
+import ItemImport from "./components/UploadCommodities";
 import CommodityReport from "./components/CommodityReport";
 
 function App() {
