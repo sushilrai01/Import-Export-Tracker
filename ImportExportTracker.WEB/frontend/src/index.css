@@ -1,13 +1,57 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--page-base);
+  /* background-image: var(--page-base-gradient); */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+html {
+  --container-width: 100%;
+  --container-padding: 20px;
+}
+
+body {
+  --page-base: hsl(218, 34%, 96%);
+  --page-base-gradient: linear-gradient(
+    177deg,
+    hsla(218, 36%, 93%, 0.64) 29%,
+    hsla(0, 0%, 100%, 0.64) 150%
+  );
+}
+
+.container {
+  padding-left: var(--container-padding) !important;
+  padding-right: var(--container-padding) !important;
+}
+
+.fill-card-width {
+  margin-left: calc(-1 * var(--card-padding));
+  margin-right: calc(-1 * var(--card-padding));
+}
+
+.fill-card-width > table tr td:first-child,
+.fill-card-width > table tr th:first-child,
+.fill-card-width tr td:first-child,
+.fill-card-width tr th:first-child {
+  padding-left: var(--card-padding);
+}
+
+.card {
+  padding: var(--card-padding);
+  --card-padding: var(--container-padding);
+  --radius: 16px;
+}
+
+.responsive-holder {
+  overflow: auto;
 }
