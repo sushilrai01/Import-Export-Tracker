@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import apiUrl from "../common/app-url";
+import AppPagination from "./pagination";
 
 const CommodityReport = () => {
   const dropDownStyle = {
@@ -66,7 +67,6 @@ const CommodityReport = () => {
       .then((response) => {
         console.log("response__data_report");
         console.log(response.data);
-        debugger;
         setCommodities(response.data.data.list);
       })
       .catch((error) => {
@@ -135,66 +135,70 @@ const CommodityReport = () => {
 
         <hr></hr>
 
-        <div>
-          {filterReportModel.reportTypeId == 2 && (
-            <table className="table table-responsive table-bordered">
-              <thead>
-                <tr>
-                  <th>SN</th>
-                  <th>Category</th>
-                  <th>Fiscal Year</th>
-                  <th>Total Quantity</th>
-                  <th>Total Import Value</th>
-                  <th>Total Import Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {commodities != null &&
-                  commodities.map((item, i) => (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>{item.categoryTitle}</td>
-                      <td>{item.fiscalYearTitle}</td>
-                      <td>{item.totalQuantity}</td>
-                      <td>{item.totalImportValue}</td>
-                      <td>{item.totalImportRevenue}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
+        <div className="card card-large border-0">
+          <div className="responsive-holder fill-card-width">
+            {filterReportModel.reportTypeId == 2 && (
+              <table className="table table-responsive table-striped">
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Category</th>
+                    <th>Fiscal Year</th>
+                    <th>Total Quantity</th>
+                    <th>Total Import Value</th>
+                    <th>Total Import Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {commodities != null &&
+                    commodities.map((item, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        <td>{item.categoryTitle}</td>
+                        <td>{item.fiscalYearTitle}</td>
+                        <td>{item.totalQuantity}</td>
+                        <td>{item.totalImportValue}</td>
+                        <td>{item.totalImportRevenue}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
 
-          {filterReportModel.reportTypeId == 1 && (
-            <table className="table table-responsive table-bordered">
-              <thead>
-                <tr>
-                  <th>SN</th>
-                  <th>Category</th>
-                  <th>Commodity Name</th>
-                  <th>HSCODE</th>
-                  <th>Fiscal Year</th>
-                  <th>Total Quantity</th>
-                  <th>Total Import Value</th>
-                  <th>Total Import Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {commodities != null &&
-                  commodities.map((item, i) => (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>{item.categoryTitle}</td>
-                      <td>{item.commodityName}</td>
-                      <td>{item.hsCode}</td>
-                      <td>{item.fiscalYearTitle}</td>
-                      <td>{item.totalQuantity}</td>
-                      <td>{item.totalImportValue}</td>
-                      <td>{item.totalImportRevenue}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
+            {filterReportModel.reportTypeId == 1 && (
+              <table className="table table-responsive table-bordered">
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Category</th>
+                    <th>Commodity Name</th>
+                    <th>HSCODE</th>
+                    <th>Fiscal Year</th>
+                    <th>Total Quantity</th>
+                    <th>Total Import Value</th>
+                    <th>Total Import Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {commodities != null &&
+                    commodities.map((item, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        <td>{item.categoryTitle}</td>
+                        <td>{item.commodityName}</td>
+                        <td>{item.hsCode}</td>
+                        <td>{item.fiscalYearTitle}</td>
+                        <td>{item.totalQuantity}</td>
+                        <td>{item.totalImportValue}</td>
+                        <td>{item.totalImportRevenue}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <AppPagination />
         </div>
       </div>
     </>
