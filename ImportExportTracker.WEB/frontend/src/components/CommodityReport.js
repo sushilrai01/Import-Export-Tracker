@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import apiUrl from "../common/app-url";
 
 const CommodityReport = () => {
   const dropDownStyle = {
@@ -19,9 +20,6 @@ const CommodityReport = () => {
   const [ddlFiscalYearId, setDdlFiscalYearId] = useState();
   const [ddlFilterId, setDdlFilterId] = useState();
 
-  //______API CALLING______
-  const apiUrl = "https://localhost:7135/";
-
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
 
   const filterParam = {
@@ -35,7 +33,7 @@ const CommodityReport = () => {
     const tempSelectObj = [{ text: "--Select--", value: "" }];
 
     axios
-      .get(apiUrl + "api/select/getFiscalYear")
+      .get(apiUrl.apiSelectUrl.getFiscalYear)
       .then((response) => {
         console.log("response__data");
         console.log(response.data);
@@ -64,7 +62,7 @@ const CommodityReport = () => {
   function searchReport() {
     console.log(filterReportModel.fiscalYearId, filterReportModel.reportTypeId);
     axios
-      .post(apiUrl + "api/commodity/reportCommodityImport", filterReportModel)
+      .post(apiUrl.apiCommodityUrl.commodityImportReport, filterReportModel)
       .then((response) => {
         console.log("response__data_report");
         console.log(response.data);

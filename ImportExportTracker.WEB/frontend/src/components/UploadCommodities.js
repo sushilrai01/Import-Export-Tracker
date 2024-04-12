@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import apiUrl from "../common/app-url.js";
 
 function ItemImport() {
   const [xlImport, setXlImport] = useState({
@@ -43,14 +44,11 @@ function ItemImport() {
     margin: "5px",
   };
 
-  //______API CALLING______
-  const apiUrl = "https://localhost:7135/";
-
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
 
   useEffect(() => {
     axios
-      .get(apiUrl + "api/select/getFiscalYear")
+      .get(apiUrl.apiSelectUrl.getFiscalYear)
       .then((response) => {
         console.log("response__data");
         console.log(response.data);
@@ -70,7 +68,7 @@ function ItemImport() {
       formData.append("file", xlImport.commodityExcel);
 
       const response = await axios.post(
-        apiUrl + "api/commodity/saveExcelData",
+        apiUrl.apiCommodityUrl.saveExcelData,
         formData
       );
 
