@@ -27,8 +27,8 @@ namespace ImportExportTracker.MODEL.Control
 
     public class FilterReportModel {
         public int FiscalYearId { get; set; }
-
         public int ReportTypeId { get; set; }
+        public PaginationModel Page { get; set; }
     }
 
 
