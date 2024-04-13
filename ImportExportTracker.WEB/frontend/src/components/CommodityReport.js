@@ -30,11 +30,11 @@ const CommodityReport = () => {
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
 
   const [ddlFiscalYearId, setDdlFiscalYearId] = useState();
-  const [ddlReportTypeId, setReportTypeId] = useState();
+  const [ddlReportTypeId, setReportTypeId] = useState(2);
 
   //FilterModel for report
   const [filterReportModel, setFilterReportModel] = useState({
-    fiscalYearId: 1,
+    fiscalYearId: 3,
     reportTypeId: 2,
     page: pagination,
   });
@@ -114,7 +114,7 @@ const CommodityReport = () => {
     axios
       .post(apiUrl.apiCommodityUrl.commodityImportReport, filterReportModel)
       .then((response) => {
-        console.log("Response PageModel:\n", response.data.data.page);
+        console.log("Response PageModel:\n", response.data.data);
 
         setCommodities(response.data.data.list);
         setPagination(response.data.data.page);
@@ -190,7 +190,7 @@ const CommodityReport = () => {
 
         <hr></hr>
 
-        <div className="card card-large border-0">
+        <div className="card card-large border-0 mb-5">
           <div className="responsive-holder fill-card-width">
             {
               // Category-Wise

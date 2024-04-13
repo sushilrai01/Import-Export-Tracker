@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   background-color: var(--page-base);
-  /* background-image: var(--page-base-gradient); */
+  background-image: var(--page-base-gradient);
 }
 
 code {
@@ -50,6 +50,12 @@ body {
   padding: var(--card-padding);
   --card-padding: var(--container-padding);
   --radius: 16px;
+}
+
+.card.card-large {
+  --card-radius: 16px;
+  border-radius: var(--card-radius);
+  box-shadow: 0 23px 20px -24px hsla(219, 37%, 18%, 0.24);
 }
 
 .responsive-holder {
