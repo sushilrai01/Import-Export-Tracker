@@ -11,17 +11,18 @@
         //public FilterModel Filter { get; set; }
         public PaginationModel Page { get; set; }
        
-        public class PaginationModel
+      
+    }
+    public class PaginationModel
+    {
+        public PaginationModel()
         {
-            public PaginationModel()
-            {
-                this.PageSize = 5;
-            }
-            public int CurrentPageNumber { get; set; }
-            public int TotalPageNumber { get; set; }
-            public int TotalRecords { get; set; }
-            public int PageSize { get; set; }
-            public int StartSerialNo { get; set; }
+            this.PageSize = 5;
         }
+        public int CurrentPageNumber { get; set; }
+        public int TotalPageNumber { get; set; }
+        public int TotalRecords { get; set; }
+        public int PageSize { get; set; }
+        public int StartSerialNo { get; set; }
     }
 }
