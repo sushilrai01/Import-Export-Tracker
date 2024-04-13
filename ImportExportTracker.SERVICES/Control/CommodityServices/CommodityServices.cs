@@ -13,6 +13,8 @@ using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Office2010.Drawing;
+using System.Transactions;
+using X.PagedList;
 
 namespace ImportExportTracker.SERVICES.Control.CommodityServices
 {
@@ -199,10 +201,17 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                     TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
                     TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
                     TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
-                }).OrderByDescending(x => x.TotalImportValue).ToList();
+                })
+                .OrderByDescending(x => x.TotalImportValue)
+                .ToPagedList(filterModel.Page.CurrentPageNumber, filterModel.Page.PageSize); // (pageNo, pageSize)
 
-                int countR = resultList.Count();
-                model.List = resultList;
+                model.List = resultList.ToList();
+
+                model.Page.StartSerialNo = (resultList.PageNumber - 1) * resultList.PageSize + 1;
+                model.Page.CurrentPageNumber = resultList.PageNumber;
+                model.Page.PageSize = resultList.PageSize;
+                model.Page.TotalRecords = resultList.TotalItemCount;
+                model.Page.TotalPageNumber =  (int) Math.Ceiling(resultList.TotalItemCount /(decimal) resultList.PageSize);
             }
             else
             {
@@ -221,10 +230,17 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                    TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
                    TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
                    TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
-               }).OrderByDescending(x => x.TotalImportValue).ToList();
+               })
+               .OrderByDescending(x => x.TotalImportValue)
+               .ToPagedList(filterModel.Page.CurrentPageNumber, filterModel.Page.PageSize);
 
-                int countR = resultList.Count();
-                model.List = resultList;
+                model.List = resultList.ToList();
+
+                model.Page.StartSerialNo = (resultList.PageNumber - 1) * resultList.PageSize + 1;
+                model.Page.CurrentPageNumber = filterModel.Page.CurrentPageNumber;
+                model.Page.PageSize = filterModel.Page.PageSize;
+                model.Page.TotalRecords = resultList.TotalItemCount;
+                model.Page.TotalPageNumber = (int)Math.Ceiling(resultList.TotalItemCount / (decimal)resultList.PageSize);
 
             }
 
