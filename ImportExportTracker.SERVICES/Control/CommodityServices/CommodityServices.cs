@@ -186,13 +186,11 @@ namespace ImportExportTracker.SERVICES.Control.CommodityServices
                     x.CategoryId,
                     x.CategoryTitle,
                     x.CommodityName,
-                    x.CommodityId,
                     x.HsCode,
                     x.FiscalYearTitle
                 })
                 .Select(group => new ReportImportExportModel
                 {
-                    CommodityId = group.Key.CommodityId,
                     CommodityName = group.Key.CommodityName,
                     HsCode = group.Key.HsCode,
                     CategoryId = group.Key.CategoryId,
