@@ -124,6 +124,34 @@ const CommodityReport = () => {
       });
   }, [filterReportModel]);
 
+  // Get pageSize from Pagination component
+  function getFromPagination(data) {
+    handlePageSizeChange(data);
+  }
+
+  // Updates pageSize and sets pageNo. to 1
+  const handlePageSizeChange = (newPageSize) => {
+    setPagination((prevPagination) => {
+      const updatedPage = { ...prevPagination, pageSize: newPageSize };
+      console.log("test:\n", updatedPage);
+      return updatedPage;
+    });
+
+    setFilterReportModel((prevFilterModel) => {
+      const updatedReport = {
+        ...prevFilterModel,
+        fiscalYearId: ddlFiscalYearId,
+        reportTypeId: ddlReportTypeId,
+        page: {
+          ...prevFilterModel.page,
+          currentPageNumber: 1,
+          pageSize: newPageSize,
+        },
+      };
+      return updatedReport;
+    });
+  };
+
   return (
     <>
       <div className="container mt-2">
