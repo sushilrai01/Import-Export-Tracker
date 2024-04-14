@@ -23,13 +23,13 @@ const CommodityReport = () => {
     currentPageNumber: 1,
     totalPageNumber: 1,
     totalRecords: 1,
-    pageSize: 10,
+    pageSize: 5,
     startSerialNo: 1,
   });
 
   const [ddlFiscalYear, setddlFiscalYear] = useState([]);
 
-  const [ddlFiscalYearId, setDdlFiscalYearId] = useState();
+  const [ddlFiscalYearId, setDdlFiscalYearId] = useState(3);
   const [ddlReportTypeId, setReportTypeId] = useState(2);
 
   //FilterModel for report
@@ -83,7 +83,10 @@ const CommodityReport = () => {
   //On page change call API depending on latest change to page number/size
   const handlePageChange = (event, page) => {
     setPagination((prevPagination) => {
-      const updatedPage = { ...prevPagination, currentPageNumber: page };
+      const updatedPage = {
+        ...prevPagination,
+        currentPageNumber: page,
+      };
       console.log("test:\n", updatedPage);
       return updatedPage;
     });
@@ -93,7 +96,10 @@ const CommodityReport = () => {
         ...prevFilterModel,
         fiscalYearId: ddlFiscalYearId,
         reportTypeId: ddlReportTypeId,
-        page: { ...prevFilterModel.page, currentPageNumber: page },
+        page: {
+          ...prevFilterModel.page,
+          currentPageNumber: page,
+        },
       };
       return updatedReport;
     });
@@ -124,11 +130,39 @@ const CommodityReport = () => {
       });
   }, [filterReportModel]);
 
+  // Get pageSize from Pagination component
+  function getFromPagination(data) {
+    handlePageSizeChange(data);
+  }
+
+  // Updates pageSize and sets pageNo. to 1
+  const handlePageSizeChange = (newPageSize) => {
+    setPagination((prevPagination) => {
+      const updatedPage = { ...prevPagination, pageSize: newPageSize };
+      console.log("test:\n", updatedPage);
+      return updatedPage;
+    });
+
+    setFilterReportModel((prevFilterModel) => {
+      const updatedReport = {
+        ...prevFilterModel,
+        fiscalYearId: ddlFiscalYearId,
+        reportTypeId: ddlReportTypeId,
+        page: {
+          ...prevFilterModel.page,
+          currentPageNumber: 1,
+          pageSize: newPageSize,
+        },
+      };
+      return updatedReport;
+    });
+  };
+
   return (
     <>
       <div className="container mt-2">
         <div
-          className="accordion accordion-flush card"
+          className="accordion accordion-flush card card-large border-0"
           id="accordionFlushExample"
         >
           <div className="accordion-item">
@@ -259,6 +293,7 @@ const CommodityReport = () => {
           </div>
 
           <AppPagination
+            getFromPagination={getFromPagination}
             totalPage={pagination.totalPageNumber}
             page={pagination.currentPageNumber}
             handlePageChange={handlePageChange}
