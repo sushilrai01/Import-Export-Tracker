@@ -16,7 +16,7 @@ export default function AppPagination(props) {
       display={"flex"}
       sx={{ margin: "5px 0px" }}
     >
-      <span className="mr-3">Select Rows:</span>
+      <span className="mx-2">Rows:</span>
       <div className="dropdown-center ml-3">
         <select
           className="form-select form-select-sm"
