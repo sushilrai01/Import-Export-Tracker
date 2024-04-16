@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import axios from "axios";
+import apiUrl from "../../common/app-url";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import React from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -22,6 +26,21 @@ ChartJS.register(
 
 export const LineGraph = () => {
   const options = {};
+  const [fiscalYear, setFiscalYear] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(apiUrl.apiSelectUrl.getFiscalYear)
+      .then((response) => {
+        console.log(response.data);
+
+        const fiscalYears = response.data;
+        setFiscalYear(fiscalYears);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   const data = {
     labels: [
       "Sunday",
