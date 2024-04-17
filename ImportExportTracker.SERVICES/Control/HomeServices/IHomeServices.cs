@@ -12,5 +12,6 @@ namespace ImportExportTracker.SERVICES.Control.HomeServices
     public interface IHomeServices
     {
         Task<ServiceResponse<HomeReportModel>> ListImportExport();
+        Task<object> GetFiscalYearTitle();
     }
 }
