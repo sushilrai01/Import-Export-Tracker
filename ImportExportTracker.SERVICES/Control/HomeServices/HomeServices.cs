@@ -101,5 +101,14 @@ namespace ImportExportTracker.SERVICES.Control.HomeServices
 
             return new ServiceResponse<HomeReportModel> (true, "Added Successfully", MessageType.Success) { Data = model };
         }
+
+        public async Task<object> GetFiscalYearTitle()
+        {
+            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
+            return await ent.CommodityImports.Include(x => x.FiscalYear).GroupBy(x => x.FiscalYear.FiscalYearTitle).Select(x => new
+            {
+                FiscalYearTitle = x.Key
+            }).Take(5).OrderBy(x => x.FiscalYearTitle).ToListAsync();
+         }
     }
 }
