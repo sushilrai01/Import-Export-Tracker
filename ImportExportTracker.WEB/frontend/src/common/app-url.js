@@ -6,6 +6,9 @@ const apiSelectBaseUrl = apiBaseUrl + "select/";
 // Commodity Import Export
 const apiCommodityBaseUrl = apiBaseUrl + "commodity/";
 
+// Home
+const apiHomeBaseUrl = apiBaseUrl + "home/";
+
 const apiUrl = {
   apiSelectUrl: {
     getFiscalYear: apiSelectBaseUrl + "getFiscalYear",
@@ -13,6 +16,10 @@ const apiUrl = {
   apiCommodityUrl: {
     saveExcelData: apiCommodityBaseUrl + "saveExcelData",
     commodityImportReport: apiCommodityBaseUrl + "reportCommodityImport",
+  },
+  apiHomeUrl: {
+    getFiscalYearTitle: apiHomeBaseUrl + "getFiscalYearTitle",
+    getTopCommodities: apiHomeBaseUrl + "topFiveRecords",
   },
 };
 

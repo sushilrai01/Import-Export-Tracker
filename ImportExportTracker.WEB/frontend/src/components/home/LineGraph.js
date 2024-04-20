@@ -30,7 +30,7 @@ export const LineGraph = () => {
 
   useEffect(() => {
     axios
-      .get(apiUrl.apiSelectUrl.getFiscalYear)
+      .get(apiUrl.apiHomeUrl.getFiscalYearTitle)
       .then((response) => {
         console.log(response.data);
 
