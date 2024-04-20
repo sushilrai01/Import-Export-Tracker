@@ -14,17 +14,23 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
             _actionServices = actionServices;
         }
 
-        [HttpGet("topFiveRecords")]
-        public async Task<IActionResult> Index()
+        [HttpGet("topFiveCommodity")]
+        public async Task<IActionResult> ListTopCommodity()
         {
-            var serviceResponse = await _actionServices.ListImportExport();
+            var serviceResponse = await _actionServices.TopCommodityImport();
             return Ok(serviceResponse);
         }
-        [HttpGet("getFiscalYearTitle")]
-        public async Task<IActionResult> GetFiscalYearTitle()
+        [HttpGet("topFiveCategory")]
+        public async Task<IActionResult> ListTopCategory()
         {
-            var serviceResponse = await _actionServices.GetFiscalYearTitle();
+            var serviceResponse = await _actionServices.TopCategoryImport();
             return Ok(serviceResponse);
         }
+        //[HttpGet("getFiscalYearTitle")]
+        //public async Task<IActionResult> GetFiscalYearTitle()
+        //{
+        //    var serviceResponse = await _actionServices.GetFiscalYearTitle();
+        //    return Ok(serviceResponse);
+        //}
     }
 }
