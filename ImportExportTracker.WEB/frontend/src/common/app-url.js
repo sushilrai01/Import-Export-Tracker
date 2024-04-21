@@ -19,7 +19,8 @@ const apiUrl = {
   },
   apiHomeUrl: {
     getFiscalYearTitle: apiHomeBaseUrl + "getFiscalYearTitle",
-    getTopCommodities: apiHomeBaseUrl + "topFiveRecords",
+    getTopCommodityImport: apiHomeBaseUrl + "topFiveCommodity",
+    getTopCategoryImport: apiHomeBaseUrl + "topFiveCategory",
   },
 };
 

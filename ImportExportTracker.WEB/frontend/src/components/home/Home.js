@@ -6,20 +6,27 @@ import axios from "axios";
 
 export default function Home() {
   //variables to hold TOP 5 commodities import
-  const [topCommodities, setTopCommodities] = useState();
-  const [topCommodities11, setTopCommodities11] = useState();
+  const [topCommodityImport, setTopCommodityImport] = useState();
+  const [topCategoryImport, setTopCategoryImport] = useState();
 
   //Calling API to fetch data of TOP Commodities
+  useEffect(() => {
+    axios
+      .get(apiUrl.apiHomeUrl.getTopCategoryImport)
+      .then((response) => {
+        setTopCategoryImport(response.data.data.categoryReportList);
+      })
+      .catch((error) => {
+        console.error("error: ", error);
+      });
+    console.log(topCommodityImport);
+  }, []);
 
   useEffect(() => {
     axios
-      .get(apiUrl.apiHomeUrl.getTopCommodities)
+      .get(apiUrl.apiHomeUrl.getTopCommodityImport)
       .then((response) => {
-        console.log("HEllo");
-        console.log(response.data.data.categoryReportList);
-        console.log(response.data.data.commodityReportList);
-        setTopCommodities(response.data.data.categoryReportList);
-        setTopCommodities11(response.data.data.commodityReportList);
+        setTopCommodityImport(response.data.data.commodityReportList);
       })
       .catch((error) => {
         console.error("error: ", error);
@@ -42,8 +49,8 @@ export default function Home() {
         <LineGraph />
 
         <TopImportsTable
-          topItems={topCommodities}
-          topItems11={topCommodities11}
+          categories={topCategoryImport}
+          commodities={topCommodityImport}
         />
       </div>
     </>
