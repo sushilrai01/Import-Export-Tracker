@@ -22,61 +22,7 @@ namespace ImportExportTracker.SERVICES.Control.HomeServices
             _dbOptions = dbOptions;
         }
 
-        public async Task<ServiceResponse<HomeReportModel>> TopCategoryImport()
-        {
-            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
-
-            HomeReportModel model = new HomeReportModel();
-            int topDataNo = 5;
-
-            var obj = await ent.CommodityImports
-            .Include(x => x.Category)
-                .Include(x => x.FiscalYear)
-                .Include(x => x.Month)
-                .Where(x => x.FiscalYearId == 3) //__CURRENT FISCAL YEAR ID
-                .Select(x => new
-                {
-                    CommodityId = x.CommodityId,
-                    CommodityName = x.CommodityName,
-                    HsCode = x.HsCode,
-                    CategoryId = x.Category.CategoryId,
-                    CategoryTitle = x.Category.CategoryTitle,
-                    ChapterCode = x.Category.ChapterCode,
-                    FiscalYearId = x.FiscalYearId,
-                    FiscalYearTitle = x.FiscalYear.FiscalYearTitle,
-                    MonthNp = x.Month.MonthNp,
-                    Unit = x.Unit,
-                    Quantity = x.Quantity,
-                    ImportValue = x.ImportValue,
-                    ImportRevenue = x.ImportRevenue,
-
-                }).ToListAsync();
-
-
-            //______Report of Commodity Import as per Category (individual)
-            var CategoryReportList = obj.GroupBy(x => new
-            {
-                x.CategoryId,
-                x.CategoryTitle,
-                x.FiscalYearTitle
-            })
-           .Select(group => new ReportImportExportModel
-           {
-               CategoryId = group.Key.CategoryId,
-               CategoryTitle = group.Key.CategoryTitle,
-               FiscalYearTitle = group.Key.FiscalYearTitle,
-               TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
-               TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
-               TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
-           })
-            .OrderByDescending(x => x.TotalImportValue);
-                
-
-            model.CategoryReportList = CategoryReportList.Take(topDataNo).ToList();
-
-            return new ServiceResponse<HomeReportModel> (true, "Added Successfully", MessageType.Success) { Data = model };
-        }
-        public async Task<ServiceResponse<HomeReportModel>> TopCommodityImport()
+        public async Task<ServiceResponse<HomeReportModel>> ListImportExport()
         {
             using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
 
@@ -132,36 +78,37 @@ namespace ImportExportTracker.SERVICES.Control.HomeServices
 
               model.CommodityReportList = commodityReportList.Take(topDataNo).ToList();
 
+            //______Report of Commodity Import as per Category (individual)
+            var CategoryReportList = obj.GroupBy(x => new
+            {
+                x.CategoryId,
+                x.CategoryTitle,
+                x.FiscalYearTitle
+            })
+           .Select(group => new ReportImportExportModel
+           {
+               CategoryId = group.Key.CategoryId,
+               CategoryTitle = group.Key.CategoryTitle,
+               FiscalYearTitle = group.Key.FiscalYearTitle,
+               TotalQuantity = (decimal)group.Sum(y => y.Quantity ?? 0),
+               TotalImportValue = group.Sum(x => x.ImportValue ?? 0),
+               TotalImportRevenue = group.Sum(x => x.ImportRevenue ?? 0),
+           })
+            .OrderByDescending(x => x.TotalImportValue);
+                
+
+            model.CategoryReportList = CategoryReportList.Take(topDataNo).ToList();
+
             return new ServiceResponse<HomeReportModel> (true, "Added Successfully", MessageType.Success) { Data = model };
         }
 
-        //public async Task<IList<dynamic>> CommodityDetailList()
-        //{
-        //    using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
-
-        //    var detailList = ent.CommodityImports
-        //    .Include(x => x.Category)
-        //        .Include(x => x.FiscalYear)
-        //        .Include(x => x.Month)
-        //        .Where(x => x.FiscalYearId == 3) //__CURRENT FISCAL YEAR ID
-        //        .Select(x => new
-        //        {
-        //            CommodityId = x.CommodityId,
-        //            CommodityName = x.CommodityName,
-        //            HsCode = x.HsCode,
-        //            CategoryId = x.Category.CategoryId,
-        //            CategoryTitle = x.Category.CategoryTitle,
-        //            ChapterCode = x.Category.ChapterCode,
-        //            FiscalYearId = x.FiscalYearId,
-        //            FiscalYearTitle = x.FiscalYear.FiscalYearTitle,
-        //            MonthNp = x.Month.MonthNp,
-        //            Unit = x.Unit,
-        //            Quantity = x.Quantity,
-        //            ImportValue = x.ImportValue,
-        //            ImportRevenue = x.ImportRevenue,
-
-        //        }).ToListAsync();
-        //    return (IList<dynamic>)detailList;
-        //}
+        public async Task<object> GetFiscalYearTitle()
+        {
+            using var ent = new ImportExportDbContext(_dbOptions.ConOptions);
+            return await ent.CommodityImports.Include(x => x.FiscalYear).GroupBy(x => x.FiscalYear.FiscalYearTitle).Select(x => new
+            {
+                FiscalYearTitle = x.Key
+            }).Take(5).OrderBy(x => x.FiscalYearTitle).ToListAsync();
+         }
     }
 }
