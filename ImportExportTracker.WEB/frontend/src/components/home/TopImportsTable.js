@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function TopImportsTable(props) {
-  const { topItems, topItems11 } = props;
+  const { categories, commodities } = props;
   return (
     <>
       <div className="row my-3">
@@ -21,16 +21,17 @@ export default function TopImportsTable(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {topItems.map((cat, i) => (
-                    <tr key={i}>
-                      <td>{1 + i}</td>
-                      <td>{cat.categoryTitle}</td>
-                      <td>{cat.fiscalYearTitle}</td>
-                      <td>{cat.totalQuantity}</td>
-                      <td>{cat.totalImportValue}</td>
-                      <td>{cat.totalImportRevenue}</td>
-                    </tr>
-                  ))}
+                  {categories != null &&
+                    categories.map((cat, i) => (
+                      <tr key={i}>
+                        <td>{1 + i}</td>
+                        <td>{cat.categoryTitle}</td>
+                        <td>{cat.fiscalYearTitle}</td>
+                        <td>{cat.totalQuantity}</td>
+                        <td>{cat.totalImportValue}</td>
+                        <td>{cat.totalImportRevenue}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -53,18 +54,19 @@ export default function TopImportsTable(props) {
                 </tr>
               </thead>
               <tbody>
-                {topItems11.map((item, i) => (
-                  <tr key={i}>
-                    <td>{1 + i}</td>
-                    <td>{item.categoryTitle}</td>
-                    <td>{item.commodityName}</td>
-                    <td>{item.hsCode}</td>
-                    <td>{item.fiscalYearTitle}</td>
-                    <td>{item.totalQuantity}</td>
-                    <td>{item.totalImportValue}</td>
-                    <td>{item.totalImportRevenue}</td>
-                  </tr>
-                ))}
+                {commodities != null &&
+                  commodities.map((item, i) => (
+                    <tr key={i}>
+                      <td>{1 + i}</td>
+                      <td>{item.categoryTitle}</td>
+                      <td>{item.commodityName}</td>
+                      <td>{item.hsCode}</td>
+                      <td>{item.fiscalYearTitle}</td>
+                      <td>{item.totalQuantity}</td>
+                      <td>{item.totalImportValue}</td>
+                      <td>{item.totalImportRevenue}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
