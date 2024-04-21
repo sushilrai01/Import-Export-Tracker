@@ -26,11 +26,11 @@ namespace ImportExportTracker.WEB.Controllers.API.Control
             var serviceResponse = await _actionServices.TopCategoryImport();
             return Ok(serviceResponse);
         }
-        //[HttpGet("getFiscalYearTitle")]
-        //public async Task<IActionResult> GetFiscalYearTitle()
-        //{
-        //    var serviceResponse = await _actionServices.GetFiscalYearTitle();
-        //    return Ok(serviceResponse);
-        //}
+        [HttpGet("getFiscalYearTitle")]
+        public async Task<IActionResult> GetFiscalYearTitle()
+        {
+            var serviceResponse = await _actionServices.GetFiscalYearTitle();
+            return Ok(serviceResponse);
+        }
     }
 }
